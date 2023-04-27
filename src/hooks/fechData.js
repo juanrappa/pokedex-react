@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 export const useFetch = () =>{
     const [page,setPage] = useState(0)
     const [data,setData] = useState([])
+    const [dataPokemon,setDataPokemon] = useState([])
     const URL = `https://pokeapi.co/api/v2/pokemon?offset=${page}&limit=20`
 
     const fetchApi = async (URL) =>{
@@ -30,12 +31,10 @@ export const useFetch = () =>{
         setPage(page - 20)
       }
     }
-    const infoUniquePokemon = (id)=>{
-      const dataUniquePoquemon = data.filter((pokemon)=>{
-        pokemon.id === id
-      })
-      return dataUniquePoquemon
-    }
+    const infoUniquePokemon = (idPokemon)=>{
+      const dataUniquePoquemon = data.filter(pokemon => pokemon.id === idPokemon)
+      setDataPokemon(dataUniquePoquemon)
+   }
     useEffect(()=>{
       (async()=>{
         const data = await fetchApi(URL)
@@ -44,11 +43,13 @@ export const useFetch = () =>{
       })()
     },[page])
     
+    
    return{
     data,
     previus,
     next,
-    infoUniquePokemon
+    infoUniquePokemon,
+    dataPokemon
    }
 
 }

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Pagination } from "./components/pagination.jsx";
 import { useFetch } from "./hooks/fechData.js";
 import { Pokemon } from "./components/pokemon.jsx";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router-dom";
 import { PokemonInfo } from "./components/pokemonInfo.jsx";
 const Title = styled.h1`
   text-align: center;
