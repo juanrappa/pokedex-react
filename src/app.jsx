@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Pagination } from "./components/pagination.jsx";
 import { useFetch } from "./hooks/fechData.js";
 import { Pokemon } from "./components/pokemon.jsx";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { PokemonInfo } from "./components/pokemonInfo.jsx";
 const Title = styled.h1`
   text-align: center;
 `;
@@ -21,13 +23,11 @@ const Page = styled.div`
   grid-template-columns: 70% 30%;
   grid-column-gap: 1rem;
 `;
-
-const App = () => {
+const SearchPokemons = () => {
   const fetch = useFetch();
   const [filter, setFilter] = useState("");
   return (
-    <Container>
-      <Title>pokedex</Title>
+    <>
       <Input
         value={filter}
         onChange={(e) => {
@@ -42,6 +42,20 @@ const App = () => {
           ))}
         <Pagination next={fetch.next} previus={fetch.previus} />
       </Page>
+    </>
+  );
+};
+const App = () => {
+  return (
+    <Container>
+      <BrowserRouter>
+        <NavLink to="/pokedex-react">home</NavLink>
+        <Title>pokedex</Title>
+        <Routes>
+          <Route path="/pokedex-react" element={<SearchPokemons />} />
+          <Route path="/pokedex-react/:id" element={<PokemonInfo />} />
+        </Routes>
+      </BrowserRouter>
     </Container>
   );
 };

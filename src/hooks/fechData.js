@@ -30,6 +30,12 @@ export const useFetch = () =>{
         setPage(page - 20)
       }
     }
+    const infoUniquePokemon = (id)=>{
+      const dataUniquePoquemon = data.filter((pokemon)=>{
+        pokemon.id === id
+      })
+      return dataUniquePoquemon
+    }
     useEffect(()=>{
       (async()=>{
         const data = await fetchApi(URL)
@@ -41,7 +47,8 @@ export const useFetch = () =>{
    return{
     data,
     previus,
-    next
+    next,
+    infoUniquePokemon
    }
 
 }
