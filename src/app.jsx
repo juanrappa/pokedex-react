@@ -1,62 +1,48 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Pagination } from "./components/pagination.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PokemonInfo } from "./pages/pokemonInfo.jsx";
+import { HeaderPokedex } from "./components/header.jsx";
+import { Home } from "./pages/home.jsx";
+import { Footer } from "./components/footer.jsx";
+import { Galery } from "./pages/Galery.jsx";
+import { useParams } from "react-router-dom";
 import { useFetch } from "./hooks/fechData.js";
-import { Pokemon } from "./components/pokemon.jsx";
-import { BrowserRouter, Routes, Route, NavLink, Link } from "react-router-dom";
-import { PokemonInfo } from "./components/pokemonInfo.jsx";
-const Title = styled.h1`
-  text-align: center;
-`;
+import { PokemonContext } from "./hooks/ContextPokemon.js";
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: auto;
   width: 800;
   padding-top: 1rem;
 `;
-const Input = styled.input`
-  width: 100%;
-  font-size: x-large;
-  padding: 0.2rem;
-`;
-const Page = styled.div`
-  display: grid;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 1rem;
-`;
-const SearchPokemons = () => {
-  const fetch = useFetch();
-  const [filter, setFilter] = useState("");
-  return (
-    <>
-      <Input
-        value={filter}
-        onChange={(e) => {
-          setFilter(e.target.value);
-        }}
-      />
-      <Page>
-        {fetch.data
-          .filter((pokemon) => pokemon.name.toLowerCase().includes(filter))
-          .map((pokemon) => (
-            <Pokemon pokemon={pokemon} />
-          ))}
-        <Pagination next={fetch.next} previus={fetch.previus} />
-      </Page>
-    </>
-  );
-};
+
 const App = () => {
+  const fetch = useFetch();
+  const params = useParams();
+  const [filter, setFilter] = useState("");
+
   return (
-    <Container>
-      <BrowserRouter>
-        <NavLink to="/pokedex-react">home</NavLink>
-        <Title>pokedex</Title>
-        <Routes>
-          <Route path="/pokedex-react" element={<SearchPokemons />} />
-          <Route path="/pokedex-react/:id" element={<PokemonInfo />} />
-        </Routes>
-      </BrowserRouter>
-    </Container>
+    <PokemonContext.Provider
+      value={{
+        fetch,
+        params,
+        filter,
+        setFilter,
+      }}
+    >
+      <Container>
+        <BrowserRouter>
+          <HeaderPokedex />
+          <Routes>
+            <Route path="/pokedex-react/" element={<Home />} />
+            <Route path="/pokedex-react/Galery" element={<Galery />} />
+            <Route path="/pokedex-react/:id" element={<PokemonInfo />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </Container>
+    </PokemonContext.Provider>
   );
 };
 
